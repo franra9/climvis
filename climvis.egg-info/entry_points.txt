@@ -1,0 +1,3 @@
+[console_scripts]
+cruvis = climvis.cli:cruvis
+
