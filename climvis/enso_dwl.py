@@ -3,7 +3,7 @@
 # import libraries 
 import cdsapi
 
-syear = 2020
+syear = 2018
 #smonth = 12
 region = [False, False, True, False]
 
