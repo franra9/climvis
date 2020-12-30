@@ -3,7 +3,7 @@
 # import libraries 
 import cdsapi
 
-syear = 2018
+#syear = 2019
 #smonth = 12
 region = [False, False, True, False]
 
@@ -42,7 +42,7 @@ def dwl_era5_enso(syear, region):
     area4 = [5, 160, -5, -150]
 
     # 10-year period, monthly data
-    year = ['{}'.format(y) for y in range(syear - 10, syear + 1)]
+    year = ['{}'.format(y) for y in range(int(syear) - 10, int(syear) + 1)]
     
     # 12 months before our month
     #months = np.arange(smonth - 12, smonth + 1) % 13
@@ -68,4 +68,4 @@ def dwl_era5_enso(syear, region):
             'ERA5_Monthly_sst_' + str(syear) + '_enso34' + '.nc')
             #dl_dir + 'ERA5_LowRes_Monthly_sst.nc')
             
-dwl_era5_enso(syear, region)
+#dwl_era5_enso(syear, region)
