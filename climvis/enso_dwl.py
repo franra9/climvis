@@ -3,22 +3,21 @@
 # import libraries 
 import cdsapi
 
-#syear = 2019
+#fyear = 2019
 #smonth = 12
-region = [False, False, True, False]
+#region = "en34"# en3 en 34, en 4[False, False, True, False]
 
-def dwl_era5_enso(syear, region):
+def dwl_era5_enso(fyear, region):
     """Download ERA5 SST data for ENSO regions
 
     Parameters
     ----------
     syear : integer
-        Year of study
-    #smonth : integer
-    #    The number of the month of study (1=Jan, 12=Dec)
-    region : boolean list
-        A list of 4 boolean representing studied ENSO regions [nino 1+2, 
-        nino 3, nino 3.4, nino 4]
+        lest year of the period
+    region : string
+        String indicating the "el niño" region. 
+        It must be "en12" (El niño 1+2),"en3" (El niño 3),"en34" (El niño 3.4),
+        or "en4" (El niño 4).
 
     Returns
     -------
@@ -27,22 +26,26 @@ def dwl_era5_enso(syear, region):
 
     c = cdsapi.Client()
 
-    #dl_dir='/home/francesc/'
-
     #to be faster, resolution is reduced
     grid = [1, 1] 
 
     # el niño 1+2
-    area12 = [0, -90, -10, -80]
+    if region == "en12":
+        area = [0, -90, -10, -80]
     # el niño 3
-    area3 = [5, -150, -5, -90]
+    elif region == "en3":    
+        area = [5, -150, -5, -90]
     # el niño 3.4
-    area34 = [5, -170, -5, -120]
-    # el niño 4
-    area4 = [5, 160, -5, -150]
+    elif region == "en34":
+        area = [5, -170, -5, -120]
+    # el niño 3.4
+    elif region == "en4":
+        area = [5, 160, -5, -150]
+    else:
+        raise ValueError('Arg "region" must be: "en12","en3","en34" or "en4".')
 
-    # 10-year period, monthly data
-    year = ['{}'.format(y) for y in range(int(syear) - 10, int(syear) + 1)]
+    # 20-year period, monthly data
+    year = ['{}'.format(y) for y in range(int(fyear) - 20, int(fyear) + 1)]
     
     # 12 months before our month
     #months = np.arange(smonth - 12, smonth + 1) % 13
@@ -50,22 +53,20 @@ def dwl_era5_enso(syear, region):
     
     month = ['{:02d}'.format(m) for m in range(1, 13)]
     
-    if region[2]:
-        c.retrieve(
-            'reanalysis-era5-single-levels-monthly-means',
-            {
-                'format':'netcdf',
-                'product_type':'monthly_averaged_reanalysis',
-                'variable':[
-                    'sea_surface_temperature',
-                    ],
-                'grid': grid,
-                'area': area34,
-                'year': year,
-                'month': month,
-                'time':'00:00'
-                }, 
-            'ERA5_Monthly_sst_' + str(syear) + '_enso34' + '.nc')
-            #dl_dir + 'ERA5_LowRes_Monthly_sst.nc')
+    c.retrieve(
+        'reanalysis-era5-single-levels-monthly-means',
+        {
+            'format':'netcdf',
+            'product_type':'monthly_averaged_reanalysis',
+            'variable':[
+                'sea_surface_temperature',
+                ],
+            'grid': grid,
+            'area': area,
+            'year': year,
+            'month': month,
+            'time':'00:00'
+            }, 
+        'ERA5_Monthly_sst_' + str(fyear) + '_' + region + '.nc')
             
-#dwl_era5_enso(syear, region)
+#dwl_era5_enso(fyear, region)
