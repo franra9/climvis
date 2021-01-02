@@ -3,10 +3,6 @@
 # import libraries 
 import cdsapi
 
-#fyear = 2019
-#smonth = 12
-#region = "en34"# en3 en 34, en 4[False, False, True, False]
-
 def dwl_era5_enso(fyear, region):
     """Download ERA5 SST data for ENSO regions
 
@@ -23,7 +19,6 @@ def dwl_era5_enso(fyear, region):
     -------
     downloads the requested files in the working directory
     """
-
     c = cdsapi.Client()
 
     #to be faster, resolution is reduced
@@ -47,10 +42,7 @@ def dwl_era5_enso(fyear, region):
     # 20-year period, monthly data
     year = ['{}'.format(y) for y in range(int(fyear) - 20, int(fyear) + 1)]
     
-    # 12 months before our month
-    #months = np.arange(smonth - 12, smonth + 1) % 13
-    #months = months[months != 0]
-    
+    # all months
     month = ['{:02d}'.format(m) for m in range(1, 13)]
     
     c.retrieve(
