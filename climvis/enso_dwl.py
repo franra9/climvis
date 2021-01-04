@@ -1,15 +1,19 @@
-"""this script downloads needed SST data to computo el niño index"""
+"""this script downloads needed SST data from CDS 
+(https://cds.climate.copernicus.eu/) to compute el niño index"""
 
 # import libraries 
 import cdsapi
 
 def dwl_era5_enso(fyear, region):
-    """Download ERA5 SST data for ENSO regions
-
+    """Download ERA5 SST data for one of the 4 El Niño regions for the 20 
+    years before the given year (fyear).
+    
+    Author: Francesc Roura Adserias
+    
     Parameters
     ----------
-    syear : integer
-        lest year of the period
+    fyear : integer
+        last year of the 20-year period.
     region : string
         String indicating the "el niño" region. 
         It must be "en12" (El niño 1+2),"en3" (El niño 3),"en34" (El niño 3.4),
@@ -17,8 +21,11 @@ def dwl_era5_enso(fyear, region):
 
     Returns
     -------
-    downloads the requested files in the working directory
+    Downloads the requested files in the working directory
     """
+    if fyear > 2019 or fyear < 1979:
+        raise ValueError('Final year must be in the 1979-2019 period.')
+
     c = cdsapi.Client()
 
     #to be faster, resolution is reduced
@@ -40,7 +47,12 @@ def dwl_era5_enso(fyear, region):
         raise ValueError('Arg "region" must be: "en12","en3","en34" or "en4".')
 
     # 20-year period, monthly data
-    year = ['{}'.format(y) for y in range(int(fyear) - 20, int(fyear) + 1)]
+    if fyear - 20 < 1979: # no data before 1979
+        year = ['{}'.format(y) for y in range(int(fyear) - 20, 
+                                            int(fyear + fyear + 20 -1979) + 1)]
+        # UserWarning("Climatology computed from 1979 to 1999.")
+    else:
+        year = ['{}'.format(y) for y in range(int(fyear) - 20, int(fyear) + 1)]
     
     # all months
     month = ['{:02d}'.format(m) for m in range(1, 13)]

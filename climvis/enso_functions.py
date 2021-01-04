@@ -2,12 +2,12 @@
 
 import xarray as xr  # netCDF library
 import numpy as np
-#import datetime
-import pandas as pd
 
 def clim(filein):
     """Returns monthly climatology for a given region.
-
+    
+    Author: Francesc Roura Adserias
+    
     Parameters
     ----------
     filein: netcdf file
@@ -18,8 +18,6 @@ def clim(filein):
     xarray Dataset
         monthly mean sst values from the netcdf
     """
-    #filein = 'ERA5_Monthly_sst_2018_enso34.nc'
-    #xr.open_dataset('./ERA5_Monthly_sst_2020_enso34.nc')
     data = xr.open_dataset(filein)
     mo_data = data.groupby('time.month').mean()
     mean_data = mo_data.mean(dim = ['latitude', 'longitude'])
@@ -27,8 +25,11 @@ def clim(filein):
     return mean_data    
 
 def yearly_evol(clim, filein, syear, fyear, smonth, fmonth):
-    """Returns monthly climatology for a given region.
-
+    """Returns monthly anomalies for a given region and its monthly 
+    climatology.
+    
+    Author: Francesc Roura Adserias
+    
     Parameters
     ----------
     clim: xarray Dataset 
@@ -60,8 +61,7 @@ def yearly_evol(clim, filein, syear, fyear, smonth, fmonth):
              str(fyear) + '-' + str(fmonth) + '-01')
   
     data_period = region_mean.sst.sel(time=period)
-    data_period.size
-    
+        
     npclim = np.array(clim.sst)
     headclim =  npclim[(smonth - 1):12] #i hate python indexing
     if (fyear - syear) == 0:
@@ -101,19 +101,8 @@ def corr(serie1, serie2): #maybe verbose, not useful
         pearson correlaion parameter
     """
     if len(serie1) != len(serie2):
-        raise ValueError('Both serie must have equal length.')
+        raise ValueError('Both series must have equal length.')
         
     pearson = np.corrcoef(serie1, serie2)[0, 1]
     
     return pearson
-    
-    
-#filein = 'ERA5_Monthly_sst_2019_en34.nc'
-#smonth = 10
-#fmonth = 2
-#syear = 2000
-#fyear =2015   
-#clim = clim(filein)
-#ano = yearly_evol(clim, filein, syear, fyear, smonth, fmonth)
-#clim = clim(filein)
-#ano = yearly_evol(clim, filein, month)
