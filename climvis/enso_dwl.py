@@ -1,8 +1,9 @@
-"""this script downloads needed SST data from CDS 
+"""This script downloads needed sea surface temperature (SST) data from CDS 
 (https://cds.climate.copernicus.eu/) to compute el niño index"""
 
-# import libraries 
+# Import libraries 
 import cdsapi
+import warnings
 
 def dwl_era5_enso(fyear, region):
     """Download ERA5 SST data for one of the 4 El Niño regions for the 20 
@@ -28,7 +29,7 @@ def dwl_era5_enso(fyear, region):
 
     c = cdsapi.Client()
 
-    #to be faster, resolution is reduced
+    # To be faster, resolution is reduced
     grid = [1, 1] 
 
     # el niño 1+2
@@ -50,11 +51,11 @@ def dwl_era5_enso(fyear, region):
     if fyear - 20 < 1979: # no data before 1979
         year = ['{}'.format(y) for y in range(int(fyear) - 20, 
                                             int(fyear + fyear + 20 -1979) + 1)]
-        # UserWarning("Climatology computed from 1979 to 1999.")
+        warnings.warn("Climatology computed from 1979 to 1999.")
     else:
         year = ['{}'.format(y) for y in range(int(fyear) - 20, int(fyear) + 1)]
     
-    # all months
+    # All months
     month = ['{:02d}'.format(m) for m in range(1, 13)]
     
     c.retrieve(
@@ -72,5 +73,3 @@ def dwl_era5_enso(fyear, region):
             'time':'00:00'
             }, 
         'ERA5_Monthly_sst_' + str(fyear) + '_' + region + '.nc')
-            
-#dwl_era5_enso(fyear, region)
