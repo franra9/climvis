@@ -1,6 +1,6 @@
 # era5vis, a climate visualization package, 
 
-**era5vis** is a package based on [**climvis**](https://fabienmaussion.info/scientific_programming/week_08/02-ClimVis.html), which at the same time is based on [scispack](https://github.com/fmaussion/scispack). It offers a visualization interface where, for a given period and location, two variables can be compared. The climvis features are also included.
+[**era5vis**](https://github.com/franra9/climvis) is a package based on [**climvis**](https://fabienmaussion.info/scientific_programming/week_08/02-ClimVis.html), which at the same time is based on [scispack](https://github.com/fmaussion/scispack). It offers a visualization interface where, for a given period and location, two variables can be compared. The climvis features are also included.
 
 It was written as the first project of the Scientific Programming course at the University of Innsbruck, modifying the course template, by: Gorosti Mancho, Marie Schroeder and Francesc Roura. 
 
